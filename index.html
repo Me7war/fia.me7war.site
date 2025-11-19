@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-astro-cid-sckkx6r4>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel="icon" type="image/png" href="assest/Fia.png">
+        <meta name="generator" content="Astro v5.14.1">
+        <title>Fia - Healthy Eating Simplified</title>
+        <!-- Open Graph / Social Media Meta Tags -->
+        <meta property="og:title" content="Fia - Healthy Eating Simplified">
+        <meta property="og:description" content="Fia is a lightweight and intuitive food journal app that makes calorie tracking effortless. So you stay consistent.">
+        <meta property="og:image" content="/banner.png">
+        <meta property="og:url" content="http://localhost:4321/">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="/banner.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter+Display:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body data-astro-cid-sckkx6r4>
+        <div class="max-w-[1100px] mx-auto p-6 font-sans flex flex-col items-center justify-center min-h-screen">
+            <main class="flex items-center gap-16 md:gap-24 w-full justify-center md:flex-row flex-col">
+                <div class="md:w-[50%] w-full max-w-[450px] text-center md:text-left">
+                    <div class="flex items-center font-semibold text-3xl mb-6 justify-center md:justify-start">
+                        <img src="assest/Fia.png" alt="Fia Food Journal" class="w-[60px] h-[60px] rounded-[14px] mr-3 border border-gray-200 shadow-sm">
+                        <span>Fia</span>
+                    </div>
+                    <h1 class="font-display md:text-[2.46rem] text-[1.93rem] font-extrabold leading-tight mb-4 text-gray-900">Healthy Eating Simplified.</h1>
+                    <p class="text-base text-gray-600 mb-6 leading-relaxed">Fia is a lightweight and intuitive food journal app that makes calorie tracking effortless. So you stay consistent.</p>
+                    <div id="form-container" class="mb-8">
+                        <form id="email-form" class="flex w-full md:flex-row flex-col">
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required class="flex-1 py-[0.9rem] px-[1.1rem] border border-gray-300 md:rounded-l-lg rounded-lg md:rounded-r-none md:mb-0 mb-3 text-[0.95rem] outline-none focus:border-primary focus:ring-3 focus:ring-primary/10 bg-white font-sans">
+                            <input type="hidden" name="message" value="New user on the wait list!!">
+                            <button type="submit" id="submit-btn" class="bg-primary text-white py-[0.9rem] px-[1.3rem] border-none md:rounded-r-lg rounded-lg md:rounded-l-none text-[0.95rem] font-semibold cursor-pointer hover:bg-primary-dark transition-colors whitespace-nowrap font-sans md:w-auto w-full">Join waitlist</button>
+                        </form>
+                    </div>
+                    <div id="thank-you-message" class="text-center p-6 bg-emerald-50 rounded-lg mb-8 hidden">
+                        <p class="text-emerald-700 font-medium text-lg">Thank you for joining the waitlist!</p>
+                        <p class="text-emerald-600 mt-2">We'll keep you updated on our progress.</p>
+                    </div>
+                    <a href="https://github.com/me7war" target="_blank" rel="noopener noreferrer" class="text-gray-400 font-medium hover:text-gray-600 transition-colors flex items-center gap-2 text-sm justify-center md:justify-start">
+                        <span>Follow @me7war for updates</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+            </main>
+        </div>
+        <script type="module">
+            const form = document.getElementById("email-form");
+            const formContainer = document.getElementById("form-container");
+            const thankYouMessage = document.getElementById("thank-you-message");
+
+            form?.addEventListener("submit", async e => {
+                e.preventDefault();
+
+                const emailInput = form.querySelector('input[name="email"]');
+                const email = emailInput?.value;
+
+                if (!email) {
+                    return;
+                }
+
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.textContent = "Submitting...";
+                    submitBtn.disabled = true;
+                }
+
+                try {
+                    const formData = new FormData(form);
+
+                    const response = await fetch("https://formspree.io/f/mqanblll", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        formContainer.classList.add("hidden");
+                        thankYouMessage.classList.remove("hidden");
+                    } else {
+                        if (submitBtn) {
+                            submitBtn.textContent = "Join waitlist";
+                            submitBtn.disabled = false;
+                        }
+                        alert("Something went wrong. Please try again.");
+                    }
+                } catch (error) {
+                    console.error("Error submitting form:", error);
+                    if (submitBtn) {
+                        submitBtn.textContent = "Join waitlist";
+                        submitBtn.disabled = false;
+                    }
+                    alert("Something went wrong. Please try again.");
+                }
+            });
+        </script>
+    </body>
+</html>
